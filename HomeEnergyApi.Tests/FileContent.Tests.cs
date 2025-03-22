@@ -148,12 +148,4 @@ public class FileTests
         Assert.True(containsSingletonValueHasher,
             "HomeEnergyApi/Program.cs does not add a value encryptor singleton service");
     }
-
-    [Fact]
-    public void DoesProgramUseApiKeyMiddleware()
-    {
-        bool containsApiKeyMiddleware = programContent.Contains("app.UseMiddleware<ApiKeyMiddleware>();");
-        Assert.True(containsApiKeyMiddleware,
-            "HomeEnergyApi/Program.cs does not add middleware with type 'ApiKeyMiddleware'");
-    }
 }

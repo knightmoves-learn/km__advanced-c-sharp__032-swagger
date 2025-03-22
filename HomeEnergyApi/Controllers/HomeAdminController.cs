@@ -34,6 +34,7 @@ namespace HomeEnergyApi.Controllers
             return Created($"/Homes/{repository.Count()}", home);
         }
 
+        [HttpPut]
         public IActionResult UpdateHome([FromBody] HomeDto homeDto, [FromRoute] int id)
         {
             Home home = mapper.Map<Home>(homeDto); ;

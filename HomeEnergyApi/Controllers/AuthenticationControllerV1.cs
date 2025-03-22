@@ -12,9 +12,9 @@ using HomeEnergyApi.Security;
 namespace HomeEnergyApi.Controllers
 {
     [ApiController]
-    [ApiVersion("2.0")]
+    [ApiVersion("1.0")]
     [Route("v{version:apiVersion}/authentication")]
-    public class AuthenticationV2Controller : ControllerBase
+    public class AuthenticationControllerV1 : ControllerBase
     {
         private readonly string _issuer;
         private readonly string _audience;
@@ -24,7 +24,7 @@ namespace HomeEnergyApi.Controllers
         private readonly ValueEncryptor valueEncryptor;
         private readonly IMapper mapper;
 
-        public AuthenticationV2Controller(IConfiguration configuration,
+        public AuthenticationControllerV1(IConfiguration configuration,
                                         IUserRepository userRepository,
                                         ValueHasher passwordHasher,
                                         ValueEncryptor valueEncryptor,
@@ -40,7 +40,7 @@ namespace HomeEnergyApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserDtoV2 userDto)
+        public async Task<IActionResult> Register([FromBody] UserDtoV1 userDto)
         {
             var existingUser = userRepository.FindByUsername(userDto.Username);
             if (existingUser != null)
@@ -54,9 +54,9 @@ namespace HomeEnergyApi.Controllers
             Console.WriteLine("Hashed Password: " + hashPassword);
             user.HashedPassword = hashPassword;
 
-            string encryptedAddress = valueEncryptor.Encrypt(BuildFullAddress(userDto));
-            Console.WriteLine("Encrypted Street Address: " + encryptedAddress);
-            user.EncryptedAddress = encryptedAddress;
+            string encryptedStreetAddress = valueEncryptor.Encrypt(userDto.HomeStreetAddress);
+            Console.WriteLine("Encrypted Street Address: " + encryptedStreetAddress);
+            user.EncryptedAddress = encryptedStreetAddress;
 
 
             userRepository.Save(user);
@@ -64,7 +64,7 @@ namespace HomeEnergyApi.Controllers
         }
 
         [HttpPost("token")]
-        public IActionResult Token([FromBody] UserDtoV2 userDto)
+        public IActionResult Token([FromBody] UserDtoV1 userDto)
         {
             var user = userRepository.FindByUsername(userDto.Username);
             if (user == null || !passwordHasher.VerifyPassword(user.HashedPassword, userDto.Password))
@@ -72,8 +72,8 @@ namespace HomeEnergyApi.Controllers
                 return Unauthorized("Invalid username or password.");
             }
 
-            string address = valueEncryptor.Decrypt(user.EncryptedAddress);
-            Console.WriteLine("Decrypted Address: " + address);
+            string streetAddress = valueEncryptor.Decrypt(user.EncryptedAddress);
+            Console.WriteLine("Decrypted Street Address: " + streetAddress);
 
             string token = GenerateJwtToken(user);
             return Ok(new { token });
@@ -99,11 +99,6 @@ namespace HomeEnergyApi.Controllers
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private string BuildFullAddress(UserDtoV2 userDto)
-        {
-            return $"{userDto.Address.StreetAddress} {userDto.Address.City}, {userDto.Address.ZipCode}";
         }
     }
 }
