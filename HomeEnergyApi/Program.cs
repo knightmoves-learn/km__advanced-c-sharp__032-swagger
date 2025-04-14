@@ -68,7 +68,7 @@ builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
-})
+});
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -81,7 +81,7 @@ builder.Services.AddSwaggerGen(options =>
         Name = "X-Api-Key",
         Type = SecuritySchemeType.ApiKey,
         Description = "Api key from header",
-    })
+    });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -91,7 +91,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         Description = "Api key from header",
-    })
+    });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -120,7 +120,7 @@ builder.Services.AddSwaggerGen(options =>
             new List<string>()
         }
     });
-})
+});
 
 var app = builder.Build();
 
@@ -135,7 +135,7 @@ app.UseWhen(context => !context.Request.Path.StartsWithSegments("/swagger"), app
     app.UseMiddleware<ApiKeyMiddleware>();
     app.UseAuthentication();
     app.UseAuthorization();
-})
+});
 
 app.MapControllers();
 
