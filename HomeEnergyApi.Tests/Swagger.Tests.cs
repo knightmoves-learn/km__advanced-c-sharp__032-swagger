@@ -65,15 +65,15 @@ public class SwaggerTests
         var bearer = swagger1["components"]?["securitySchemes"]?["Bearer"];
 
         bool apiKeyValid = apikey?["type"]?.ToString() == "apiKey" &&
-                           apikey?["description"]?.ToString() == "API Key from header" &&
+                           apikey?["description"]?.ToString() == "Api key from header" &&
                            apikey?["name"]?.ToString() == "X-Api-Key" &&
                            apikey?["in"]?.ToString() == "header";
 
         bool bearerValid = bearer?["type"]?.ToString() == "http" &&
-                           bearer?["description"]?.ToString() == "JWT Authorization header" &&
+                           bearer?["description"]?.ToString() == "JWT Authorization Header" &&
                            bearer?["scheme"]?.ToString() == "Bearer" &&
                            bearer?["bearerFormat"]?.ToString() == "JWT";
         
-        Assert.True(apiKeyValid && bearerValid, "Swagger did not return a swagger doc with the expected security definitions");
+        Assert.True(apiKeyValid && bearerValid, "Swagger did not return a swagger doc with the expected security definitions (your 'Security Definitions did not match the definitions outlined in the readme')");
     }
 }
