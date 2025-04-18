@@ -80,17 +80,16 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Name = "X-Api-Key",
         Type = SecuritySchemeType.ApiKey,
-        Description = "Api key from header",
+        Description = "API key from header",
     });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Name = "X-Api-Key",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
-        Description = "Api key from header",
+        Description = "JWT Authorization header",
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement

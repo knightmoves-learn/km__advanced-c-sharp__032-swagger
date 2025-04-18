@@ -23,11 +23,10 @@ In `HomeEnergyApi/Program.cs`
             - Description = `"Api key from header"`
         - Add a Security Definition named `Bearer` with an `OpenApiSecurityScheme` containing the following properties
             - In = `ParameterLocation.Header`
-            - Name = `"X-Api-Key"`
-            - Type = `SecuritySchemeType.ApiKey`
+            - Type = `SecuritySchemeType.Http`
             - Scheme = `"Bearer"`
             - BearerFromat = `"JWT"`
-            - Description = `"Api key from header"`
+            - Description = `"JWT Authorization header"`
         - Add a Security Requirement with `AddSecurityRequirement()`, passing an `OpenApiSecurityRequirement` with the following items
             - A new `OpenApiSecurityScheme` with a `Reference` to the `ApiKey` Security Definition followed by an empty `List<string>`
             - A new `OpenApiSecurityScheme` with a `Reference` to the `Bearer` Security Definition followed by an empty `List<string>`
