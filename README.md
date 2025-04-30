@@ -22,7 +22,6 @@ In `HomeEnergyApi/Program.cs`
             - Type = `SecuritySchemeType.ApiKey`
             - Description = `"Api key from header"`
         - Add a Security Definition named `Bearer` with an `OpenApiSecurityScheme` containing the following properties
-            - In = `ParameterLocation.Header`
             - Type = `SecuritySchemeType.Http`
             - Scheme = `"Bearer"`
             - BearerFromat = `"JWT"`
